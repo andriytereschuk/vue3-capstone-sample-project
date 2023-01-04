@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <div>Card</div>
+  <div>{{ msg }}</div>
 </template>
 
 <style scoped></style>
