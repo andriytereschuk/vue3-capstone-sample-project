@@ -5,10 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 14.18.3
       - name: Install & Build
         run: |
           npm install
@@ -22,14 +22,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const lighthouseCommentMaker = require('./.github/workflows/lighthouseCommentMaker.js');
-
-            const lighthouseOutputs = {
-              manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
-              links: ${{ steps.lighthouse_audit.outputs.links }}
-            };
-
-            const comment = lighthouseCommentMaker({ lighthouseOutputs });
+            const comment = "Hello github!";
             core.setOutput("comment", comment);
       - name: Add Lighthouse stats as comment
         id: comment_to_pr
