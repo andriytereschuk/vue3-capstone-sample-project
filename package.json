@@ -1,6 +1,10 @@
 {
   "name": "vue3-capstone-sample-project",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
