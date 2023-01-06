@@ -17,6 +17,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v9
         with:
           configPath: ./.github/workflows/lighthouserc.json
+          temporaryPublicStorage: true
       - name: Job successful feedback
         if: ${{ success() }}
         run: |
