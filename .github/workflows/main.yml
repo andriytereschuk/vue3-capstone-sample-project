@@ -9,12 +9,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-
       - name: Install & Build
         run: |
           npm install
           npm run build
-
       - name: Run Lighthouse against a static dist dir
         uses: treosh/lighthouse-ci-action@v9
         with:
@@ -22,8 +20,6 @@ jobs:
           configPath: '.github/workflows/lighthouserc.json'
           uploadArtifacts: true
           temporaryPublicStorage: true
-          runs: 1
-
       - name: Format lighthouse score
         id: format_lighthouse_score
         uses: actions/github-script@v5
@@ -38,7 +34,6 @@ jobs:
 
             const comment = lighthouseCommentMaker({ lighthouseOutputs });
             core.setOutput("comment", comment);
-
         - name: Add Lighthouse stats as comment
           id: comment_to_pr
           uses: marocchino/sticky-pull-request-comment@v2.0.0
