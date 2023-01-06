@@ -16,7 +16,7 @@ jobs:
       - name: Run Lighthouse against a static dist dir
         uses: treosh/lighthouse-ci-action@v9
         with:
-          configPath: ./.github/workflows/lighthousesrc.json
+          configPath: ./.github/workflows/lighthouserc.json
       - name: Format lighthouse score
         id: format_lighthouse_score
         uses: actions/github-script@v5
