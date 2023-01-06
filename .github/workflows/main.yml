@@ -52,9 +52,13 @@ jobs:
 
             const comment = lighthouseCommentMaker({ lighthouseOutputs });
             core.setOutput("comment", comment);
+      - name: Find PR details
+        id: finder
+        uses: jwalton/gh-find-current-pr@v1
       - name: Add Lighthouse stats as comment
         id: comment-to-pr
         uses: marocchino/sticky-pull-request-comment@v2
         with:
+          number: ${{ steps.finder.outputs.pr }}
           header: lighthouse
           message: ${{ steps.format-lighthouse-score.outputs.comment }}        
