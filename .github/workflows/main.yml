@@ -17,19 +17,17 @@ jobs:
         uses: treosh/lighthouse-ci-action@v9
         with:
           configPath: ./.github/workflows/lighthouserc.json
-      - name: Format lighthouse score
-        id: format_lighthouse_score
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const comment = "Hello github!";
-            core.setOutput("comment", comment);
-      - name: Add Lighthouse stats as comment
-        id: comment_to_pr
-        uses: marocchino/sticky-pull-request-comment@v2.0.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ github.event.pull_request.number }}
-          header: lighthouse
-          message: ${{ steps.format_lighthouse_score.outputs.comment }}
-       
+      - name: Job successful feedback
+        if: ${{ success() }}
+        run: |
+          echo "**Lighthouse results:**" >> $GITHUB_STEP_SUMMARY
+          echo "Performance: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.performance }}" >> $GITHUB_STEP_SUMMARY
+          echo "Accessibility: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.accessibility }}" >> $GITHUB_STEP_SUMMARY
+          echo "Best-practices: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.best-practices }}" >> $GITHUB_STEP_SUMMARY
+          echo "SEO: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.seo }}" >> $GITHUB_STEP_SUMMARY
+          echo "PWA: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.pwa }}" >> $GITHUB_STEP_SUMMARY
+          
+      - name: Job failed feedback
+        if: ${{ failure() }}
+        run: |
+          echo '### Publishing to Deploy Now was not successful :cross:' >> $GITHUB_STEP_SUMMARY
