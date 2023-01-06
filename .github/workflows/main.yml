@@ -1,5 +1,5 @@
 name: Lighthouse
-on: push
+if: github.event_name == 'pull_request' && github.event.action != 'closed'
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
