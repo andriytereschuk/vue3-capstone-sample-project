@@ -5,20 +5,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
+
       - name: Install & Build
         run: |
           npm install
           npm run build
+
       - name: Run Lighthouse against a static dist dir
         id: lighthouse
         uses: treosh/lighthouse-ci-action@v9
         with:
           configPath: ./.github/workflows/lighthouserc.json
           temporaryPublicStorage: true
+
       - name: Job successful feedback
         if: ${{ success() }}
         run: |
@@ -28,8 +32,29 @@ jobs:
           echo "Best-practices: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.best-practices }}" >> $GITHUB_STEP_SUMMARY
           echo "SEO: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.seo }}" >> $GITHUB_STEP_SUMMARY
           echo "PWA: ${{ fromJSON(steps.lighthouse.outputs.manifest)[0].summary.pwa }}" >> $GITHUB_STEP_SUMMARY
-          
+
       - name: Job failed feedback
         if: ${{ failure() }}
         run: |
           echo '### Publishing to Deploy Now was not successful :cross:' >> $GITHUB_STEP_SUMMARY
+
+      - name: Format lighthouse score
+        id: format-lighthouse-score
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lighthouseCommentMaker = require('./.github/workflows/lighthouseCommentMaker.js');
+
+            const lighthouseOutputs = {
+              manifest: ${{ steps.lighthouse.outputs.manifest }},
+              links: ${{ steps.lighthouse.outputs.links }}
+            };
+
+            const comment = lighthouseCommentMaker({ lighthouseOutputs });
+            core.setOutput("comment", comment);
+      - name: Add Lighthouse stats as comment
+        id: comment-to-pr
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: lighthouse
+          message: ${{ steps.format-lighthouse-score.outputs.comment }}        
