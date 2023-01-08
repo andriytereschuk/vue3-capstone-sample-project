@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import AppFilter from '@/components/AppFilter.vue'
+</script>
 
 <template>
-  <div class="text-red-700">Home</div>
+  <AppFilter />
 </template>

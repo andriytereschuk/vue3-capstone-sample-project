@@ -1,8 +1,9 @@
 {
   "name": "vue3-capstone-sample-project",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "engines": {
-    "node": "16.x",
+    "node": "18.x",
     "npm": "8.x"
   },
   "scripts": {
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "pinia": "^2.0.23",
+    "rickmortyapi": "^2.2.0",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"
   },
