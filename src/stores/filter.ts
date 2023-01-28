@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router'
 import { defineStore } from 'pinia'
 import type { IFilter } from '@/types'
 import type { LocationQuery } from 'vue-router'
+import { updateRouteQuery } from '@/router'
 
 export const useFilterStore = defineStore('filter', () => {
   const { query } = useRoute()
@@ -11,7 +12,9 @@ export const useFilterStore = defineStore('filter', () => {
     name,
     specie
   })
+
   const onFilterUpdate = () => {
+    updateRouteQuery(current)
     console.log('onFilterUpdate', current)
   }
 
